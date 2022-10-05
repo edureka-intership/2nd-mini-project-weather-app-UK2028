@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <style>
+        #main{
+            background-color: darkblue;
+            height: 100vh;
+        }
+        #search{
+            background-color: darkblue;
+            color: white;
+            border-color: darkblue;
+        }
+    </style>
+</head>
+<body>
+    <div class="d-flex flex-column justify-content-center align-items-center" id="main">
+        <h1 style="color: white;font-weight: bold;">Simple Weather App</h1>
+        <form action="" id="form" style="margin: 2%;" class="border-bottom ">
+            <input id="search" class="form-control form-control-lg " type="text" placeholder="search for a city">
+        </form>
+    </div>
+    <script>
+        let main=document.getElementById('main');
+        let form=document.getElementById('form');
+        let loc=document.getElementById('search');
+        form.addEventListener('submit',(e) => {
+            getWeather(loc.value);
+            e.preventDefault();
+        })
+        let getWeather=async (city) => {
+            const api=`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=802c5d7c37659e8d1fcf7142ecedccf7&units=metric`;
+            const param={method:'GET'};
+            const res = await fetch(api,param);
+            const data = await res.json();
+            displayWeather(data);
+        }
+        function displayWeather(ele)
+        {
+            city=ele.name;
+            temperature=ele.main.temp;
+            type=ele.weather[0].main;
+            humidity=ele.main.humidity;
+            visibility=(ele.visibility)/1000;
+            wind=ele.wind.speed;
+            img_url=`http://openweathermap.org/img/wn/${ele.weather[0].icon}@2x.png`;
+            console.log(ele);
+            let output=`<div class="card" style="width: 15rem;height: 15rem;margin-top: 4%;">
+            <div class="card-body">
+              <h5 class="card-title">${city}</h5>
+              <h2 class="card-subtitle mb-2 text-muted">${temperature.toFixed(2)}<sup style="font-size: 1rem;">°C</sup></h2>
+              <img src="${img_url}" alt="">
+              <h6>${type}</h6>
+            </div>
+          </div>`;
+            main.innerHTML+=output;
+        }
+    </script>
+</body>
+</html>
