@@ -42,6 +42,10 @@
         }
         function displayWeather(ele)
         {
+            if(ele.cod==404){
+                main.innerHTML+=`<h2 style="color:white;">CITY NOT FOUND<br>enter a valid location</h2>`;
+                return;
+            }
             city=ele.name;
             temperature=ele.main.temp;
             type=ele.weather[0].main;
